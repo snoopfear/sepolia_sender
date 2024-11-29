@@ -42,7 +42,7 @@ def check_balances(wallets):
         sender_address = web3.eth.account.from_key(private_key).address
         # Получить баланс
         balance = web3.eth.get_balance(sender_address)
-        eth_balance = web3.fromWei(balance, "ether")
+        eth_balance = web3.from_wei(balance, "ether")
         print(f"Адрес: {sender_address} | Баланс: {eth_balance} ETH")
 
         # Задержка между проверками
