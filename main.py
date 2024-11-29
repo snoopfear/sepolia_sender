@@ -78,6 +78,7 @@ def send_eth(private_key, receiver_address, percentage):
         "gas": 21000,  # Стандартный лимит газа для перевода ETH
         "gasPrice": web3.eth.gas_price,
         "nonce": web3.eth.get_transaction_count(sender_address),
+        "chainId": 11155111,
     }
 
     # Подписание транзакции
