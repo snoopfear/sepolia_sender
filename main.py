@@ -15,7 +15,10 @@ SEND_PERCENTAGE = 1
 
 # Укажите диапазон задержки между транзакциями (в секундах)
 MIN_DELAY = 5
-MAX_DELAY = 15
+MAX_DELAY = 10
+
+# Задержка между проверками баланса (в секундах)
+BALANCE_CHECK_DELAY = 1
 
 # Загрузка кошельков из файла
 def load_wallets(file_path):
@@ -25,6 +28,22 @@ def load_wallets(file_path):
             private_key, receiver_address = line.strip().split(":")
             wallets.append((private_key, receiver_address))
     return wallets
+
+# Проверка баланса с задержкой
+def check_balances(wallets):
+    print("\n--- Проверка баланса кошельков ---\n")
+    for private_key, receiver_address in wallets:
+        # Получить адрес отправителя из приватного ключа
+        sender_address = web3.eth.account.from_key(private_key).address
+        # Получить баланс
+        balance = web3.eth.get_balance(sender_address)
+        eth_balance = web3.fromWei(balance, "ether")
+        print(f"Адрес: {sender_address} | Баланс: {eth_balance} ETH")
+
+        # Задержка между проверками
+        print(f"Ожидание {BALANCE_CHECK_DELAY} секунд перед проверкой следующего кошелька...")
+        time.sleep(BALANCE_CHECK_DELAY)
+    print("\nПроверка баланса завершена.\n")
 
 # Отправка ETH
 def send_eth(private_key, receiver_address, percentage):
@@ -63,20 +82,41 @@ def send_eth(private_key, receiver_address, percentage):
     except Exception as e:
         print(f"Ошибка при отправке транзакции: {e}")
 
-# Основная функция
-def main():
-    # Загрузить список кошельков
-    wallets = load_wallets("wallets.txt")
-
-    # Обработка каждого кошелька
+# Запуск передачи ETH
+def send_eth_to_wallets(wallets, percentage):
+    print("\n--- Запуск передачи ETH ---\n")
     for private_key, receiver_address in wallets:
         print(f"Отправка с {private_key} на {receiver_address}")
-        send_eth(private_key, receiver_address, SEND_PERCENTAGE)
+        send_eth(private_key, receiver_address, percentage)
 
         # Рандомная задержка
         delay = random.randint(MIN_DELAY, MAX_DELAY)
         print(f"Ожидание {delay} секунд перед следующей транзакцией...")
         time.sleep(delay)
+    print("\nПередача ETH завершена.\n")
 
+# Основное меню
+def main_menu():
+    wallets = load_wallets("wallets.txt")
+
+    while True:
+        print("\n--- Главное меню ---")
+        print("1. Проверить баланс кошельков (Sepolia)")
+        print("2. Запустить передачу ETH")
+        print("3. Выйти")
+        
+        choice = input("\nВведите номер действия: ")
+
+        if choice == "1":
+            check_balances(wallets)
+        elif choice == "2":
+            send_eth_to_wallets(wallets, SEND_PERCENTAGE)
+        elif choice == "3":
+            print("Выход из программы.")
+            break
+        else:
+            print("Неверный выбор. Попробуйте снова.")
+
+# Запуск программы
 if __name__ == "__main__":
-    main()
+    main_menu()
