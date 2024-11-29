@@ -7,7 +7,7 @@ RPC_URL = "https://endpoints.omniatech.io/v1/eth/sepolia/public"  # Замени
 web3 = Web3(Web3.HTTPProvider(RPC_URL))
 
 # Проверка соединения
-if not web3.isConnected():
+if not web3.is_connected():
     raise Exception("Не удалось подключиться к RPC-узлу")
 
 # Задать процент отправки ETH от баланса (например, 50%):
