@@ -85,7 +85,7 @@ def send_eth(private_key, receiver_address, percentage):
 
     # Отправка транзакции
     try:
-        tx_hash = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = web3.eth.send_raw_transaction(signed_tx.raw_transaction)
         print(f"Транзакция отправлена! Hash: {web3.toHex(tx_hash)}")
     except Exception as e:
         print(f"Ошибка при отправке транзакции: {e}")
