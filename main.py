@@ -58,7 +58,7 @@ def send_eth(private_key, receiver_address, percentage):
 
     # Получить баланс
     balance = web3.eth.get_balance(sender_address)
-    eth_balance = web3.fromWei(balance, "ether")
+    eth_balance = web3.from_wei(balance, "ether")
     print(f"Баланс отправителя {sender_address}: {eth_balance} ETH")
 
     # Рассчитать сумму для отправки
