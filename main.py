@@ -26,9 +26,14 @@ def load_wallets(file_path):
     with open(file_path, "r") as file:
         for line in file:
             private_key, receiver_address = line.strip().split(":")
+            
+            # Добавить '0x' к приватному ключу, если его нет
+            if not private_key.startswith("0x"):
+                private_key = "0x" + private_key
+            
             wallets.append((private_key, receiver_address))
     return wallets
-
+    
 # Проверка баланса с задержкой
 def check_balances(wallets):
     print("\n--- Проверка баланса кошельков ---\n")
