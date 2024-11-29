@@ -58,7 +58,7 @@ def send_eth(private_key, receiver_address, percentage):
 
     # Получить баланс
     balance = web3.eth.get_balance(sender_address)
-    eth_balance = web3.from_wei(balance, "ether")
+    eth_balance = web3.fromWei(balance, "ether")
     print(f"Баланс отправителя {sender_address}: {eth_balance} ETH")
 
     # Рассчитать сумму для отправки
@@ -78,7 +78,7 @@ def send_eth(private_key, receiver_address, percentage):
         "gas": 21000,  # Стандартный лимит газа для перевода ETH
         "gasPrice": web3.eth.gas_price,
         "nonce": web3.eth.get_transaction_count(sender_address),
-        "chainId": 11155111,
+        "chainId": 11155111,  # Chain ID для Sepolia
     }
 
     # Подписание транзакции
