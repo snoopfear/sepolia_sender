@@ -68,7 +68,7 @@ def send_eth(private_key, receiver_address, percentage):
         return
 
     # Преобразовать адрес получателя в формат checksum
-    receiver_address = Web3.to_checksumAddress(receiver_address)
+    receiver_address = Web3.to_checksum_address(receiver_address)
 
     # Составление транзакции
     tx = {
